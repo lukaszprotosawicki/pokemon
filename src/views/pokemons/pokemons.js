@@ -2,37 +2,35 @@ import { useEffect, useState } from "react";
 import { Page } from "../../components/page";
 import { Title } from "../../components/title";
 
+let API = `https://pokeapi.co/api/v2/pokemon`;
+
 export function Pokemons() {
   const [pokemons, setPokemons] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getPokemoms = async () => {
-      const response = await fetch("https://pokeapi.co/api/v2/pokemon");
-
-      const jsonResponse = await response.json();
-      console.log(jsonResponse.results);
-      setPokemons(jsonResponse.results);
+      setLoading(true);
+      setError(false);
+      try {
+        const response = await fetch(API);
+        const jsonResponse = await response.json();
+        // console.log(jsonResponse.results);
+        setPokemons(jsonResponse.results);
+      } catch (error) {
+        setError(true);
+      }
     };
+    setLoading(false);
     getPokemoms();
   }, []);
 
   return (
     <Page>
       <Title>Pokemons list</Title>
-      <p className="text-white py-6 text-center">
-        Here will be list of pokemons from pokeapi
-      </p>
+
       <ol className="text-white list-decimal">
-        <p className="font-bold">What you need to do</p>
-        <li>
-          Call pokeapi inside useEffect (remember to not cause infinite loop
-          because you'll break pokeapi!) and save the response in state
-          (useState)
-        </li>
-        <li>
-          Display list of pokemons (pokeapi uses pagination so keep that in
-          mind) like example below
-        </li>
         <li>
           [Extra] Add buttons PREVIOUS - NEXT at the bottom so I can load next
           batch of pokemons
@@ -64,19 +62,21 @@ export function Pokemons() {
         Example of what I want to see here is something like this
       </p>
       <ol className="poke-font text-white grid grid-cols-2 grid-flow-row-dense gap-1">
-        {pokemons.map((pokemon, index) => {
-          return (
-            <li
-              key={pokemon - index}
-              className={`hover:bg-red-700 cursor-pointer ${
-                index < 10 ? "col-start-1" : "col-start-2"
-              }`}
-            >
-              #{index + 1} - {pokemon.name}
-            </li>
-          );
-        })}
+        {loading &&
+          pokemons.map((pokemon, index) => {
+            return (
+              <li
+                key={pokemon - index}
+                className={`hover:bg-red-700 cursor-pointer ${
+                  index < 10 ? "col-start-1" : "col-start-2"
+                }`}
+              >
+                #{index + 1} - {pokemon.name}
+              </li>
+            );
+          })}
       </ol>
+      {error && <div>some error occured</div>}
     </Page>
   );
 }
