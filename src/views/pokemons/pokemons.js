@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
 import { Page } from "../../components/page";
 import { Title } from "../../components/title";
-import { pokeApiResponse } from "../../utils/sampleResponse";
 
 export function Pokemons() {
+  const [pokemons, setPokemons] = useState([]);
+
+  useEffect(() => {
+    const getPokemoms = async () => {
+      const response = await fetch("https://pokeapi.co/api/v2/pokemon");
+
+      const jsonResponse = await response.json();
+      console.log(jsonResponse.results);
+      setPokemons(jsonResponse.results);
+    };
+    getPokemoms();
+  }, []);
+
   return (
     <Page>
       <Title>Pokemons list</Title>
@@ -51,19 +64,19 @@ export function Pokemons() {
         Example of what I want to see here is something like this
       </p>
       <ol className="poke-font text-white grid grid-cols-2 grid-flow-row-dense gap-1">
-        {pokeApiResponse.map((pokemon, index) => (
-          <li
-            key={pokemon - index}
-            className={`hover:bg-red-700 cursor-pointer ${
-              index < 10 ? "col-start-1" : "col-start-2"
-            }`}
-          >
-            #{index + 1} - {pokemon.name}
-          </li>
-        ))}
+        {pokemons.map((pokemon, index) => {
+          return (
+            <li
+              key={pokemon - index}
+              className={`hover:bg-red-700 cursor-pointer ${
+                index < 10 ? "col-start-1" : "col-start-2"
+              }`}
+            >
+              #{index + 1} - {pokemon.name}
+            </li>
+          );
+        })}
       </ol>
     </Page>
   );
 }
-
-export default Pokemons;
