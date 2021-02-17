@@ -10,16 +10,18 @@ export function Pokemons() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getPokemoms = async () => {
+    const getPokemons = async (loading, pokemons, error) => {
       setLoading(true);
       setError(false);
       try {
         const response = await fetch(API);
         const jsonResponse = await response.json();
-        // console.log(jsonResponse.results);
         setPokemons(jsonResponse.results);
-      } catch (error) {
-        if ((error = true)) {
+      } catch {
+        if (loading && pokemons) {
+          return <div>Loading yours Pokemon</div>;
+        }
+        if (!loading && error) {
           setError(true);
         } else {
           alert("empty");
@@ -27,7 +29,7 @@ export function Pokemons() {
       }
     };
     setLoading(false);
-    getPokemoms();
+    getPokemons();
   }, []);
 
   return (
