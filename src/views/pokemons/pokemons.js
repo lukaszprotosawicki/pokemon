@@ -19,7 +19,11 @@ export function Pokemons() {
         // console.log(jsonResponse.results);
         setPokemons(jsonResponse.results);
       } catch (error) {
-        setError(true);
+        if ((error = true)) {
+          setError(true);
+        } else {
+          alert("empty");
+        }
       }
     };
     setLoading(false);
