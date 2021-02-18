@@ -42,13 +42,6 @@ export function Pokemons() {
           batch of pokemons
         </li>
         <li>
-          Handle states:
-          <p>Initial</p>
-          <p>Loading</p>
-          <p>Loaded</p>
-          <p>Error</p>
-        </li>
-        <li>
           Create pokemon profile page, so when I click on selected pokemon I go
           to the specific page where I can see more details about pokemon
           (pokemonId, name, types and avatar). Refer to Favourites, you'll see
@@ -74,7 +67,7 @@ export function Pokemons() {
               <li
                 key={pokemon - index}
                 className={`hover:bg-red-700 cursor-pointer ${
-                  index < 10 ? "col-start-1" : "col-start-2"
+                  index < 10 ? "col-start-1" : "col-start-2 "
                 }`}
               >
                 #{index + 1} - {pokemon.name}
@@ -82,6 +75,12 @@ export function Pokemons() {
             );
           })}
       </ol>
+      <br></br>
+      <div className="poke-font text-white grid grid-cols-2 grid-flow-row-dense gap-1">
+        <button className="hover:bg-red-700 cursor-pointer">NEXT</button>
+        <button className="hover:bg-red-700 cursor-pointer">PREVIOUS</button>
+      </div>
+
       {error && <div>some error occured</div>}
     </Page>
   );
